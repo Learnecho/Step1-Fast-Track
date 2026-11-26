@@ -60,6 +60,9 @@ summary{cursor:pointer}
 .phase{border-left:4px solid var(--line);padding:4px 0 4px 12px;margin:10px 0}.phase.now{border-color:var(--accent)}
 table.tp{width:100%;border-collapse:collapse;font-size:14px}table.tp td{padding:6px 0;border-top:1px solid var(--line)}table.tp td:last-child{text-align:right;white-space:nowrap}
 textarea{width:100%;margin-top:10px;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:13px/1.4 ui-monospace,Menlo,monospace}
+.lab{border-top:1px solid var(--line);padding:9px 0}.lab summary{display:flex;justify-content:space-between;gap:10px;list-style:none}.lab summary::-webkit-details-marker{display:none}.lab summary span:last-child{text-align:right;font-variant-numeric:tabular-nums;white-space:normal;max-width:55%}.lab p{margin:6px 0 2px;font-size:14px;color:var(--mute)}.star{color:var(--flag)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 10px}.chips button{padding:6px 10px;border:1px solid var(--line);background:var(--card);border-radius:16px;font-size:14px}.chips button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+#labov{position:fixed;inset:0;background:var(--bg);overflow:auto;z-index:10;padding:calc(env(safe-area-inset-top,0px) + 12px) 16px 24px}#labov .in{max-width:680px;margin:0 auto}
 </style>
 </head>
 <body>
@@ -72,9 +75,10 @@ textarea{width:100%;margin-top:10px;padding:10px;border:1px solid var(--line);bo
 </main>
 <script>var Q=[];</script>
 <!-- Question files are append-only and must stay in this order: progress is stored by question index. Add new files at the end of this list. -->
-<script src="q/s1-batch1.js?v=2"></script>
+<script src="q/s1-batch1.js?v=3"></script>
+<script src="labs.js?v=3"></script>
 <script>
-var APPV=2;
+var APPV=3;
 // Row: [system, stem, options, answerIndex, explanation, 1 = new/unchecked, "F"|"C", discipline]
 // USMLE Step 1 content specifications (usmle.org): system, midpoint of the published % range.
 var BP={full:"USMLE Step 1 content specifications",target:3000,perBlock:20,blockSec:1800,doms:[
@@ -109,9 +113,20 @@ function logSession(){var n=0,sc=0;S.ids.forEach(function(id){if(S.ans[id]!==und
 function commitTest(){if(S.mode=="test"&&!S.committed){S.committed=1;S.ids.forEach(function(id){if(S.ans[id]!==undefined)rec(id,S.ans[id]===Q[id][3])})}}
 function pct(c,a){return a?Math.round(100*c/a):0}
 function ids(f){var r=[];Q.forEach(function(q,i){if(f(q,i))r.push(i)});return r}
-function nav(){var p=view=="progress",pl=view=="plan";return '<nav><button class="'+(p||pl?"":"on")+'" onclick="go(\'home\')">Practice</button><button class="'+(pl?"on":"")+'" onclick="go(\'plan\')">Study plan</button><button class="'+(p?"on":"")+'" onclick="go(\'progress\')">Progress</button></nav>'}
-function go(v){if(view=="quiz"&&S){stopT();commitTest();logSession()}view=v;armed=false;draw()}
-function draw(){window.scrollTo(0,0);({home:home,quiz:quiz,result:result,progress:progress,plan:plan})[view]();if(view=="home")srchUpd()}
+function nav(){var p=view=="progress",pl=view=="plan",lb=view=="labs";return '<nav><button class="'+(p||pl||lb?"":"on")+'" onclick="go(\'home\')">Practice</button><button class="'+(pl?"on":"")+'" onclick="go(\'plan\')">Plan</button><button class="'+(lb?"on":"")+'" onclick="go(\'labs\')">Labs</button><button class="'+(p?"on":"")+'" onclick="go(\'progress\')">Progress</button></nav>'}
+// ---- Lab values ----
+var LCATS=[];LABS.forEach(function(r){if(LCATS.indexOf(r[0])<0)LCATS.push(r[0])});
+var lq="",lcat="All",lkey=false;
+function labRows(){var t=lq.trim().toLowerCase();return LABS.filter(function(r){return (lcat=="All"||r[0]==lcat)&&(!lkey||r[4])&&(!t||(r[1]+" "+r[2]+" "+r[3]+" "+r[0]).toLowerCase().indexOf(t)>=0)})}
+function labList(){var r=labRows(),last="";if(!r.length)return '<p class="mute">No lab values match.</p>';return r.map(function(x){var h=x[0]!=last&&lcat=="All"?'<h2 style="margin:16px 0 4px;font-size:15px;color:var(--accent)">'+x[0]+'</h2>':"";last=x[0];return h+'<details class="lab"><summary><span>'+(x[4]?'<span class="star" title="High-yield">★</span> ':'')+x[1]+'</span><span>'+x[2]+'</span></summary><p>'+x[3]+'</p></details>'}).join("")}
+function labCtl(){return '<input type="text" id="lq" placeholder="Search, e.g. sodium, PTT, CSF" value="'+esc(lq)+'" oninput="lq=this.value;labUpd()" autocomplete="off"><div class="chips">'+["All"].concat(LCATS).map(function(c){return '<button class="'+(lcat==c?"on":"")+'" onclick="lcat=\''+c+'\';labDraw()">'+c+'</button>'}).join("")+'<button class="'+(lkey?"on":"")+'" onclick="lkey=!lkey;labDraw()">★ High-yield</button></div><div id="llist">'+labList()+'</div>'}
+function labUpd(){var e=document.getElementById("llist");if(e)e.innerHTML=labList()}
+function labDraw(){if(document.getElementById("labov"))labOpen();else draw()}
+function labs(){A.innerHTML=nav()+'<div class="card"><h2>Normal lab values</h2><p class="mute" style="margin:0">Adult reference ranges with what makes each value high or low. Tap a test to learn it. On the real exam a lab values table is always available, so you do not need every number: memorize the ★ high-yield ones and learn the patterns. Ranges vary slightly between labs; use the values given in each question.</p></div><div class="card">'+labCtl()+'</div>'}
+function labOpen(){var o=document.getElementById("labov");if(!o){o=document.createElement("div");o.id="labov";document.body.appendChild(o)}o.innerHTML='<div class="in"><div class="row" style="margin:0 0 10px"><h2 style="margin:0">Lab values</h2><button class="ghost" onclick="labClose()">Close</button></div>'+labCtl()+'</div>'}
+function labClose(){var o=document.getElementById("labov");if(o)o.remove()}
+function go(v){labClose();if(view=="quiz"&&S){stopT();commitTest();logSession()}view=v;armed=false;draw()}
+function draw(){window.scrollTo(0,0);({home:home,quiz:quiz,result:result,progress:progress,plan:plan,labs:labs})[view]();if(view=="home")srchUpd()}
 function start(list,o){if(!list.length)return;o=o||{};stopT();S={ids:o.keep?list:shuffle(list),i:0,mode:o.mode||mode,ans:{},sid:Date.now(),exam:!!o.secs};if(o.secs){S.end=Date.now()+o.secs*1000;tick=setInterval(tickT,1000)}view="quiz";draw()}
 
 // ---- Study plan ----
@@ -166,7 +181,7 @@ var id=S.ids[S.i],q=Q[id],sel=S.ans[id],tutor=S.mode=="tutor",shown=tutor&&sel!=
 var opts=q[2].map(function(o,k){var c="opt";if(shown){if(k==q[3])c+=" ok";else if(k==sel)c+=" bad"}else if(k===sel)c+=" sel";return '<button class="'+c+'" onclick="pick('+k+')" '+(shown?"disabled":"")+'><b>'+"ABCDEFGH"[k]+'</b><span>'+o+'</span></button>'}).join("");
 var ex=shown?'<div class="exp '+(sel==q[3]?"good":"miss")+'"><strong>'+(sel==q[3]?"Correct.":"Incorrect. The answer is "+"ABCDEFGH"[q[3]]+".")+'</strong> '+q[4]+'</div>':"";
 var last=S.i==n-1;
-A.innerHTML=nav()+'<div class="card">'+(S.exam?'<div class="row" style="margin:0 0 8px"><strong>Exam block</strong><span>Time left <span id="tm" class="timer">'+fmt(S.end-Date.now())+'</span></span></div>':'')+'<div class="row" style="margin:0 0 8px"><span class="mute">Question '+(S.i+1)+' of '+n+(S.exam?'':' · '+q[0]+(q[7]?' · '+q[7]:'')+(q[6]=="C"?' · Challenge':''))+(q[5]&&!S.exam?' · <span class="flag">New, unchecked</span>':'')+'</span><button class="ghost" onclick="flip('+id+')" aria-pressed="'+!!D.flags[id]+'"><span class="'+(D.flags[id]?"flag":"")+'">'+(D.flags[id]?"Flagged":"Flag")+'</span></button></div><div class="bar"><i style="width:'+(100*S.i/n)+'%"></i></div><p class="stem">'+q[1]+'</p>'+opts+ex+'<div class="row">'+(S.i>0&&!tutor?'<button class="ghost" onclick="S.i--;draw()">Back</button>':'')+'<button class="primary" id="nx" style="margin:0" '+(tutor&&sel===undefined?"disabled":"")+' onclick="next()">'+(last?"Finish":"Next question")+'</button></div><div class="row"><button class="ghost" onclick="go(\'home\')">End session</button><span class="mute">Keys: 1–'+q[2].length+' to answer, Enter for next</span></div></div>'}
+A.innerHTML=nav()+'<div class="card">'+(S.exam?'<div class="row" style="margin:0 0 8px"><strong>Exam block</strong><span>Time left <span id="tm" class="timer">'+fmt(S.end-Date.now())+'</span></span></div>':'')+'<div class="row" style="margin:0 0 8px"><span class="mute">Question '+(S.i+1)+' of '+n+(S.exam?'':' · '+q[0]+(q[7]?' · '+q[7]:'')+(q[6]=="C"?' · Challenge':''))+(q[5]&&!S.exam?' · <span class="flag">New, unchecked</span>':'')+'</span><span style="display:flex;gap:6px"><button class="ghost" onclick="labOpen()">Lab values</button><button class="ghost" onclick="flip('+id+')" aria-pressed="'+!!D.flags[id]+'"><span class="'+(D.flags[id]?"flag":"")+'">'+(D.flags[id]?"Flagged":"Flag")+'</span></button></span></div><div class="bar"><i style="width:'+(100*S.i/n)+'%"></i></div><p class="stem">'+q[1]+'</p>'+opts+ex+'<div class="row">'+(S.i>0&&!tutor?'<button class="ghost" onclick="S.i--;draw()">Back</button>':'')+'<button class="primary" id="nx" style="margin:0" '+(tutor&&sel===undefined?"disabled":"")+' onclick="next()">'+(last?"Finish":"Next question")+'</button></div><div class="row"><button class="ghost" onclick="go(\'home\')">End session</button><span class="mute">Keys: 1–'+q[2].length+' to answer, Enter for next</span></div></div>'}
 function flip(id){if(D.flags[id])delete D.flags[id];else D.flags[id]=1;save();draw()}
 function pick(k){var id=S.ids[S.i];if(k>=Q[id][2].length)return;if(S.mode=="tutor"){if(S.ans[id]!==undefined)return;S.ans[id]=k;rec(id,k==Q[id][3]);logSession()}else S.ans[id]=k;draw()}
 function next(){if(S.i<S.ids.length-1){S.i++;draw()}else finish()}
@@ -184,7 +199,7 @@ for(var j=0;j<400;j++){var dd=new Date();dd.setDate(dd.getDate()-j);var ee=D.day
 var ses=D.sessions.slice(-8).reverse().map(function(s){return '<div class="row" style="margin:6px 0"><span>'+new Date(s.d).toLocaleDateString()+' · '+(s.x?"Exam block":s.m=="tutor"?"Tutor":"Test")+(s.p&&s.p>s.n?" · partial":"")+'</span><strong>'+s.s+'/'+s.n+' ('+pct(s.s,s.n)+'%)</strong></div>'}).join("")||'<p class="mute">No sessions yet. Finish one to see it here.</p>';
 A.innerHTML=nav()+'<div class="card"><h2>Overall</h2><div class="big">'+pct(cor,tot)+'%</div><p class="mute">'+cor+' correct of '+tot+' answered · '+D.sessions.length+' sessions</p></div><div class="card"><h2>Daily practice</h2><p class="mute">Goal: '+G+' questions a day · streak: '+streak+' day'+(streak==1?"":"s")+'</p>'+rd+'</div><div class="card"><h2>By system</h2>'+rows+'</div>'+bpCard()+'<div class="card"><h2>Recent sessions</h2>'+ses+'</div>'+backupCard()+'<button class="ghost" onclick="reset()">'+(armed?"Tap again to erase all progress":"Reset progress")+'</button><p class="mute" style="text-align:center;margin-top:18px">Step1 Fast Track version '+APPV+' · '+Q.length+' questions<br>Independent study tool. Not affiliated with USMLE, NBME or FSMB.</p>'}
 function reset(){if(!armed){armed=true;draw();return}D={stats:{},flags:{},sessions:[],days:{},plan:D.plan};save();armed=false;draw()}
-document.addEventListener("keydown",function(e){if(view!="quiz"||(e.target&&e.target.tagName=="INPUT"))return;if(e.key>="1"&&e.key<="8"){pick(+e.key-1)}else if(e.key=="Enter"){var b=document.getElementById("nx");if(b&&!b.disabled)next()}});
+document.addEventListener("keydown",function(e){if(view!="quiz"||document.getElementById("labov")||(e.target&&e.target.tagName=="INPUT"))return;if(e.key>="1"&&e.key<="8"){pick(+e.key-1)}else if(e.key=="Enter"){var b=document.getElementById("nx");if(b&&!b.disabled)next()}});
 draw();
 function checkUpdate(){if(!window.fetch)return;fetch("version.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()}).then(function(j){if(j&&j.v>APPV&&view!="quiz"&&location.search.indexOf("v="+j.v)<0){location.replace(location.pathname+"?v="+j.v)}}).catch(function(){})}
 checkUpdate();
