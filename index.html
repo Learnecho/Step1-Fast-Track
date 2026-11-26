@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Step1 Fast Track</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="theme-color" content="#2B4593">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Step1 Fast">
+<style>
+:root{--bg:#EEF1F7;--card:#fff;--ink:#141B2D;--mute:#5A6478;--line:#CDD3E0;--accent:#2B4593;--ok:#1E7B4F;--okbg:#DDF0E5;--bad:#B3392F;--badbg:#F7DEDA;--flag:#B7791F;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root{--bg:#0D111B;--card:#161C2B;--ink:#E7EAF2;--mute:#97A0B5;--line:#2A3247;--accent:#8EA6F2;--ok:#5BC48C;--okbg:#14301F;--bad:#F0877D;--badbg:#3A1B18;--flag:#E0A94A;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:680px;margin:0 auto;padding:16px}
+header{display:flex;align-items:center;gap:10px;color:var(--accent);margin-bottom:12px}
+header h1{margin:0;font-size:20px;color:var(--ink)}
+nav{display:flex;gap:8px;margin-bottom:16px}
+button{font:inherit;color:inherit;cursor:pointer}
+nav button,.seg button{flex:1;padding:10px 4px;border:1px solid var(--line);background:var(--card);border-radius:8px}
+nav button.on,.seg button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+@media (prefers-color-scheme:dark){nav button.on,.seg button.on{color:#0D111B}}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:14px}
+h2{font-size:17px;margin:0 0 8px}
+.seg{display:flex;gap:8px;margin:8px 0 14px}
+select,input[type=date],input[type=text]{width:100%;padding:10px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:16px/1.4 -apple-system,sans-serif;margin:6px 0 14px}
+.primary{width:100%;padding:13px;border:0;border-radius:8px;background:var(--accent);color:#fff;font-weight:600;margin-top:6px}
+@media (prefers-color-scheme:dark){.primary{color:#0D111B}}
+.primary:disabled{opacity:.45;cursor:not-allowed}
+.ghost{padding:10px 14px;border:1px solid var(--line);background:transparent;border-radius:8px}
+.mute{color:var(--mute);font-size:14px}
+.bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent)}
+.stem{font:18px/1.6 Georgia,"Times New Roman",serif;margin:12px 0 16px;max-width:62ch}
+.opt{display:flex;gap:12px;width:100%;text-align:left;padding:12px;margin-bottom:8px;border:1px solid var(--line);background:var(--card);border-radius:8px}
+.opt b{min-width:22px}
+.opt.sel{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.opt.ok{background:var(--okbg);border-color:var(--ok)}
+.opt.bad{background:var(--badbg);border-color:var(--bad)}
+.exp{padding:12px;border-radius:8px;margin:12px 0;border-left:4px solid}
+.exp.good{background:var(--okbg);border-color:var(--ok)}
+.exp.miss{background:var(--badbg);border-color:var(--bad)}
+.row{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:10px}
+.big{font-size:44px;font-weight:700;line-height:1.1}
+.trow{margin-bottom:12px}
+.trow div:first-child{display:flex;justify-content:space-between;gap:8px;font-size:14px;margin-bottom:4px}
+details{border-top:1px solid var(--line);padding:10px 0}
+summary{cursor:pointer}
+.flag{color:var(--flag)}
+.timer{font-variant-numeric:tabular-nums;font-weight:600}
+.timer.low{color:var(--bad)}
+.hero{background:var(--accent);color:#fff;border:0}
+@media (prefers-color-scheme:dark){.hero{color:#0D111B}}
+.hero .mute{color:inherit;opacity:.85}
+.hero .primary{background:#fff;color:#2B4593}
+.stat{display:flex;gap:10px;margin:6px 0 4px}.stat div{flex:1;border:1px solid var(--line);border-radius:8px;padding:10px;text-align:center}.stat b{display:block;font-size:24px}
+.phase{border-left:4px solid var(--line);padding:4px 0 4px 12px;margin:10px 0}.phase.now{border-color:var(--accent)}
+table.tp{width:100%;border-collapse:collapse;font-size:14px}table.tp td{padding:6px 0;border-top:1px solid var(--line)}table.tp td:last-child{text-align:right;white-space:nowrap}
+textarea{width:100%;margin-top:10px;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:13px/1.4 ui-monospace,Menlo,monospace}
+</style>
+</head>
+<body>
+<main>
+<header>
+<svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><rect x="2" y="2" width="30" height="30" rx="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M19 6 L10 19 H17 L15 28 L24 14 H17 Z" fill="currentColor"/></svg>
+<h1>Step1 Fast Track</h1>
+</header>
+<div id="app"></div>
+</main>
+<script>var Q=[];</script>
+<!-- Question files are append-only and must stay in this order: progress is stored by question index. Add new files at the end of this list. -->
+<script src="q/s1-batch1.js?v=1"></script>
+<script>
+var APPV=1;
+// Row: [system, stem, options, answerIndex, explanation, 1 = new/unchecked, "F"|"C", discipline]
+// USMLE Step 1 content specifications (usmle.org): system, midpoint of the published % range.
+var BP={full:"USMLE Step 1 content specifications",target:3000,perBlock:20,blockSec:1800,doms:[
+["Human development",2],["Blood & immune",11],["Nervous system & behavior",12],["Musculoskeletal & skin",10],
+["Cardiovascular",9],["Respiratory & renal",13],["Gastrointestinal",8],["Reproductive & endocrine",14],
+["Multisystem",10],["Biostatistics & epidemiology",5],["Communication & ethics",7.5]]};
+var WSUM=BP.doms.reduce(function(a,d){return a+d[1]},0);
+var T=BP.doms.map(function(d){return d[0]}).filter(function(t){return Q.some(function(q){return q[0]==t})});
+var DISC=[];Q.forEach(function(q){if(q[7]&&DISC.indexOf(q[7])<0)DISC.push(q[7])});DISC.sort();
+var KEY="step1_fast_v1",D={stats:{},flags:{},sessions:[],days:{},plan:null};
+try{var L=JSON.parse(localStorage.getItem(KEY));if(L&&L.stats)D=L}catch(e){}
+D.days=D.days||{};D.sessions=D.sessions||[];D.flags=D.flags||{};
+function dkey(d){return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2)}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){}}
+var bk="",bm="";
+function esc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+function showBk(m){bk=(bk==m?"":m);bm="";progress()}
+function doRestore(){var t=document.getElementById("rt").value;try{var R=JSON.parse(t);if(!R||!R.stats)throw 0;D=R;D.days=D.days||{};D.sessions=D.sessions||[];D.flags=D.flags||{};save();bk="";bm="Backup restored.";progress()}catch(e){bm="That text is not a valid backup.";progress()}}
+function backupCard(){return '<div class="card"><h2>Backup</h2><p class="mute">Your progress is saved on this phone. Show a backup now and then and keep it in Notes.</p><div class="row"><button class="ghost" onclick="showBk(\'show\')">Show backup</button><button class="ghost" onclick="showBk(\'restore\')">Restore</button></div>'+(bm?'<p>'+bm+'</p>':"")+(bk=="show"?'<textarea readonly rows="5" onfocus="this.select()">'+esc(JSON.stringify(D))+'</textarea>':"")+(bk=="restore"?'<textarea id="rt" rows="5" placeholder="Paste backup here"></textarea><button class="primary" onclick="doRestore()">Restore this backup</button>':"")+'</div>'}
+var level="All",disc="All",srch="";
+function srchIds(){var t=srch.trim().toLowerCase();if(t.length<2)return[];return ids(function(q){return (q[1]+" "+q[2].join(" ")+" "+q[4]+" "+q[0]+" "+(q[7]||"")).toLowerCase().indexOf(t)>=0})}
+function srchUpd(){var e=document.getElementById("sres");if(!e)return;var r=srchIds();e.innerHTML=srch.trim().length<2?'<p class="mute" style="margin:0">Type at least 2 letters. '+Q.length+' questions in the bank.</p>':(r.length?'<p class="mute" style="margin:0 0 8px">'+r.length+' matching question'+(r.length==1?"":"s")+'</p>'+r.slice(0,4).map(function(i){return '<div class="mute" style="font-size:14px;border-top:1px solid var(--line);padding:6px 0">'+Q[i][1]+'</div>'}).join("")+'<button class="primary" onclick="start(srchIds())">Practice these '+r.length+'</button>':'<p class="mute" style="margin:0">No questions match.</p>')}
+function inPool(q){return (topic=="All"||q[0]==topic)&&(disc=="All"||q[7]==disc)&&(level=="All"||(level=="Challenge")==(q[6]=="C"))}
+var S=null,view="home",mode="tutor",topic="All",armed=false,A=document.getElementById("app");
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
+var GAP=[1,2,4,7,14,30];
+function dayN(){var d=new Date();return Math.floor((d.getTime()-d.getTimezoneOffset()*60000)/86400000)}
+function due(i){var s=D.stats[i];return !!s&&(s.d===undefined?s.l===0:s.d<=dayN())}
+function rec(id,ok){var s=D.stats[id]||{a:0,c:0};s.a++;if(ok)s.c++;s.l=ok?1:0;s.b=ok?Math.min((s.b||0)+1,GAP.length):0;s.d=dayN()+(ok?GAP[s.b-1]:0);D.stats[id]=s;var k=dkey(new Date()),d=D.days[k]||{a:0,c:0};d.a++;if(ok)d.c++;D.days[k]=d;save()}
+function todayA(){var d=D.days[dkey(new Date())];return d?d.a:0}
+function logSession(){var n=0,sc=0;S.ids.forEach(function(id){if(S.ans[id]!==undefined){n++;if(S.ans[id]===Q[id][3])sc++}});if(!n)return;var e=null;D.sessions.forEach(function(x){if(x.d==S.sid)e=x});if(!e){e={d:S.sid};D.sessions.push(e)}e.s=sc;e.n=n;e.p=S.ids.length;e.m=S.mode;if(S.exam)e.x=1;save()}
+function commitTest(){if(S.mode=="test"&&!S.committed){S.committed=1;S.ids.forEach(function(id){if(S.ans[id]!==undefined)rec(id,S.ans[id]===Q[id][3])})}}
+function pct(c,a){return a?Math.round(100*c/a):0}
+function ids(f){var r=[];Q.forEach(function(q,i){if(f(q,i))r.push(i)});return r}
+function nav(){var p=view=="progress",pl=view=="plan";return '<nav><button class="'+(p||pl?"":"on")+'" onclick="go(\'home\')">Practice</button><button class="'+(pl?"on":"")+'" onclick="go(\'plan\')">Study plan</button><button class="'+(p?"on":"")+'" onclick="go(\'progress\')">Progress</button></nav>'}
+function go(v){if(view=="quiz"&&S){stopT();commitTest();logSession()}view=v;armed=false;draw()}
+function draw(){window.scrollTo(0,0);({home:home,quiz:quiz,result:result,progress:progress,plan:plan})[view]();if(view=="home")srchUpd()}
+function start(list,o){if(!list.length)return;o=o||{};stopT();S={ids:o.keep?list:shuffle(list),i:0,mode:o.mode||mode,ans:{},sid:Date.now(),exam:!!o.secs};if(o.secs){S.end=Date.now()+o.secs*1000;tick=setInterval(tickT,1000)}view="quiz";draw()}
+
+// ---- Study plan ----
+function daysLeft(){if(!D.plan||!D.plan.date)return null;var p=D.plan.date.split("-"),e=new Date(+p[0],+p[1]-1,+p[2]),t=new Date();t.setHours(0,0,0,0);return Math.round((e-t)/86400000)}
+function goal(){var dl=daysLeft();if(dl===null||dl<=0)return 20;var unseen=Q.length-Object.keys(D.stats).length,newDays=Math.max(1,dl-14),g=Math.ceil(unseen/newDays)+Math.ceil(ids(function(q,i){return due(i)}).length/Math.max(1,dl)),cap=Math.max(20,Math.round((D.plan.hrs||4)*15));return Math.min(cap,Math.max(20,Math.round(g/10)*10))}
+function sysAcc(t){var a=0,c=0;Q.forEach(function(q,i){if(q[0]==t&&D.stats[i]){a+=D.stats[i].a;c+=D.stats[i].c}});return{a:a,c:c}}
+function focus(){return BP.doms.filter(function(d){return T.indexOf(d[0])>=0}).map(function(d){var s=sysAcc(d[0]),acc=s.a>=5?s.c/s.a:(s.a?0.5*s.c/s.a:0);return{t:d[0],w:d[1],s:s,score:d[1]*(1-acc)}}).sort(function(a,b){return b.score-a.score}).slice(0,3)}
+function setPlan(){var d=document.getElementById("pd").value,h=+document.getElementById("ph").value;if(!d)return;D.plan={date:d,hrs:h};save();draw()}
+function hrs(m){var h=Math.round(m/6)/10;return h+(h==1?' hour':' hours')}
+function addDays(n){var d=new Date();d.setDate(d.getDate()+n);return d.toLocaleDateString(undefined,{month:"short",day:"numeric"})}
+function plan(){var p=D.plan||{},dl=daysLeft(),g=goal(),min=g*3,h=p.hrs||4;
+var form='<div class="card"><h2>Your exam</h2><label class="mute" for="pd">Exam date</label><input type="date" id="pd" value="'+(p.date||"")+'"><label class="mute" for="ph">Study hours per day</label><select id="ph">'+[2,3,4,6,8,10].map(function(x){return '<option value="'+x+'"'+(x==h?" selected":"")+'>'+x+' hours</option>'}).join("")+'</select><button class="primary" onclick="setPlan()">'+(p.date?"Update my plan":"Make my plan")+'</button></div>';
+if(dl===null){A.innerHTML=nav()+form+'<p class="mute">Enter your exam date and daily study time. The app sets a daily question goal, splits your time into phases, and tells you which systems to study first.</p>';return}
+if(dl<=0){A.innerHTML=nav()+'<div class="card hero"><h2>'+(dl==0?"Exam day. You prepared for this.":"Your exam date has passed.")+'</h2><p class="mute">'+(dl==0?"Eat, hydrate, and use your breaks. Good luck!":"Set a new date below if you are retaking or rescheduling.")+'</p></div>'+form;return}
+var ph=[["Build",dl-21,"Learn system by system. Do today's questions in tutor mode, read every explanation, and review your weak systems."],["Sharpen",Math.min(dl,21)-7,"Mixed timed blocks of 20 questions every day. Take an official NBME practice exam each week to check your readiness."],["Final week",Math.min(dl,7),"Missed and flagged questions, high-yield review, and one full rest day before the exam."]],cur=dl>21?0:dl>7?1:2,day=0;
+var phases=ph.map(function(x,i){var n=Math.max(0,x[1]),from=day;day+=n;if(!n)return"";return '<div class="phase'+(i==cur?" now":"")+'"><strong>'+x[0]+'</strong> <span class="mute">· '+n+' day'+(n==1?"":"s")+' · '+(i==2?addDays(from)+" to exam":addDays(from)+" to "+addDays(day-1))+'</span><div class="mute">'+x[2]+'</div></div>'}).join("");
+var f=focus().map(function(x){return '<div class="row" style="border-top:1px solid var(--line);padding-top:8px"><span>'+x.t+' <span class="mute">('+Math.round(100*x.w/WSUM)+'% of exam · '+(x.s.a?pct(x.s.c,x.s.a)+'% correct':"not started")+')</span></span><button class="ghost" onclick="topic=\''+x.t+'\';start(ids(function(q){return q[0]==\''+x.t+'\'}),{mode:\'tutor\'})">Study</button></div>'}).join("");
+var left=h*60-min;
+A.innerHTML=nav()+'<div class="card hero"><h2>'+dl+' day'+(dl==1?"":"s")+' to Step 1</h2><p class="mute" style="margin:0">Daily goal: '+g+' questions (about '+hrs(min)+' with explanations).'+(left>=30?' Use the other '+hrs(left)+' for content review of your focus systems.':' That fills your study time, so focus on questions.')+'</p><button class="primary" style="margin-top:12px" onclick="daily()">Start today\'s questions</button></div>'+
+'<div class="card"><h2>Focus systems</h2><p class="mute" style="margin:0 0 6px">Ranked by exam weight and your accuracy. Study these first.</p>'+f+'</div>'+
+'<div class="card"><h2>Your phases</h2>'+phases+'</div>'+form}
+
+function daily(){var G=goal(),left=Math.max(0,G-todayA());if(!left)left=20;var d=shuffle(ids(function(q,i){return due(i)})),n=shuffle(ids(function(q,i){return !D.stats[i]})),r=shuffle(ids(function(q,i){return D.stats[i]&&!due(i)})),out=d.slice(0,Math.ceil(left*0.6));n.concat(d.slice(out.length),r).forEach(function(i){if(out.length<left&&out.indexOf(i)<0)out.push(i)});start(shuffle(out),{keep:1,mode:"tutor"})}
+
+// ---- Exam blocks ----
+var exBlocks=1,tick=null;
+function domOf(t){for(var i=0;i<BP.doms.length;i++)if(BP.doms[i][0]==t)return i;return -1}
+function exN(){return Math.min(exBlocks*BP.perBlock,Q.length)}
+function setBlocks(v){exBlocks=v;draw()}
+function exam(){var n=exN(),pick=[],short=[],want=BP.doms.map(function(d){return Math.round(n*d[1]/WSUM)}),big=7;want[big]+=n-want.reduce(function(a,c){return a+c},0);
+BP.doms.forEach(function(d,i){var pool=shuffle(ids(function(q){return q[0]==d[0]})),k=Math.min(want[i],pool.length);if(k<want[i])short.push(d[0]);pick=pick.concat(pool.slice(0,k))});
+if(pick.length<n){var rest=shuffle(ids(function(q,i){return pick.indexOf(i)<0}));pick=pick.concat(rest.slice(0,n-pick.length))}
+start(shuffle(pick),{keep:1,mode:"test",secs:Math.round(pick.length*BP.blockSec/BP.perBlock)});S.bp=1;S.short=short}
+function stopT(){if(tick){clearInterval(tick);tick=null}}
+function fmt(ms){var t=Math.max(0,Math.ceil(ms/1000));return Math.floor(t/60)+":"+("0"+t%60).slice(-2)}
+function tickT(){if(!S||!S.exam||view!="quiz"){stopT();return}var r=S.end-Date.now(),e=document.getElementById("tm");if(r<=0){stopT();S.timeout=1;finish();return}if(e){e.textContent=fmt(r);e.className="timer"+(r<300000?" low":"")}}
+
+function home(){
+var pool=ids(inPool),G=goal();
+var missed=ids(function(q,i){return D.stats[i]&&D.stats[i].l===0});
+var flagged=ids(function(q,i){return D.flags[i]});
+var fresh=ids(function(q){return q[5]});
+var seen=Object.keys(D.stats).length;
+var dn=ids(function(q,i){return due(i)}).length,ta=todayA(),dl=daysLeft();
+A.innerHTML=nav()+'<div class="card hero"><h2>Today\'s '+G+'</h2><p class="mute" style="margin:0 0 8px">'+(dl!==null&&dl>0?dl+" days to your exam. ":'<a href="#" style="color:inherit" onclick="go(\'plan\');return false">Set your exam date</a> to get a personal daily goal. ')+(ta>=G?"Goal done for today: "+ta+" answered.":ta+" of "+G+" answered today.")+'</p><div class="bar" style="background:rgba(255,255,255,.3)"><i style="background:#fff;width:'+Math.min(100,100*ta/G)+'%"></i></div><button class="primary" style="margin-top:12px" onclick="daily()">'+(ta>=G?"Start 20 more":"Start today\'s "+(G-ta))+'</button></div>'+
+'<div class="card"><h2>Timed exam blocks</h2><p class="mute" style="margin:0">Like the real Step 1: up to 20 questions in 30 minutes per block. Questions follow the '+BP.full+'. Answers stay hidden until the end.</p><div class="seg">'+[1,2,4].map(function(n){return '<button class="'+(exBlocks==n?"on":"")+'" onclick="setBlocks('+n+')">'+n+' block'+(n>1?"s":"")+'</button>'}).join("")+'</div><button class="primary" '+(exN()?"":"disabled")+' onclick="exam()">Start · '+exN()+' questions · '+fmt(exN()*BP.blockSec/BP.perBlock*1000)+'</button></div>'+
+'<div class="card"><h2>Search questions</h2><input type="text" id="qsr" placeholder="e.g. warfarin, Kawasaki, anion gap" value="'+esc(srch)+'" oninput="srch=this.value;srchUpd()" autocomplete="off"><div id="sres"></div></div>'+
+'<div class="card"><h2>Custom session</h2><div class="mute">Mode</div><div class="seg"><button class="'+(mode=="tutor"?"on":"")+'" onclick="mode=\'tutor\';draw()">Tutor</button><button class="'+(mode=="test"?"on":"")+'" onclick="mode=\'test\';draw()">Test</button></div><div class="mute">'+(mode=="tutor"?"Tutor shows the answer and explanation after each question.":"Test hides answers until you finish, like the real exam.")+'</div><label class="mute" for="t" style="display:block;margin-top:14px">System</label><select id="t" onchange="topic=this.value;draw()"><option>All</option>'+T.map(function(t){return '<option'+(t==topic?" selected":"")+'>'+t+'</option>'}).join("")+'</select><label class="mute" for="ds">Discipline</label><select id="ds" onchange="disc=this.value;draw()"><option>All</option>'+DISC.map(function(t){return '<option'+(t==disc?" selected":"")+'>'+t+'</option>'}).join("")+'</select><label class="mute" for="lv">Level</label><select id="lv" onchange="level=this.value;draw()">'+["All","Foundation","Challenge"].map(function(t){return '<option'+(t==level?" selected":"")+'>'+t+'</option>'}).join("")+'</select><button class="primary" '+(pool.length?"":"disabled")+' onclick="start(ids(inPool))">Start '+pool.length+' questions</button></div>'+
+'<div class="card"><h2>Review</h2><button class="primary" '+(dn?"":"disabled")+' onclick="start(ids(function(q,i){return due(i)}),{mode:\'tutor\'})">Smart review: '+dn+' due</button><p class="mute">Missed questions come back the same day. Each time you get one right, it waits longer: 1, 2, 4, 7, 14, then 30 days.</p><div class="row"><button class="ghost" '+(missed.length?"":"disabled")+' onclick="start(ids(function(q,i){return D.stats[i]&&D.stats[i].l===0}))">Missed ('+missed.length+')</button><button class="ghost" '+(flagged.length?"":"disabled")+' onclick="start(ids(function(q,i){return D.flags[i]}))">Flagged ('+flagged.length+')</button></div><div class="row"><button class="ghost" '+(fresh.length?"":"disabled")+' onclick="start(ids(function(q){return q[5]}))">New, unchecked ('+fresh.length+')</button></div><p class="mute">You have seen '+seen+' of '+Q.length+' questions.</p></div>'}
+function quiz(){
+var id=S.ids[S.i],q=Q[id],sel=S.ans[id],tutor=S.mode=="tutor",shown=tutor&&sel!==undefined,n=S.ids.length;
+var opts=q[2].map(function(o,k){var c="opt";if(shown){if(k==q[3])c+=" ok";else if(k==sel)c+=" bad"}else if(k===sel)c+=" sel";return '<button class="'+c+'" onclick="pick('+k+')" '+(shown?"disabled":"")+'><b>'+"ABCDEFGH"[k]+'</b><span>'+o+'</span></button>'}).join("");
+var ex=shown?'<div class="exp '+(sel==q[3]?"good":"miss")+'"><strong>'+(sel==q[3]?"Correct.":"Incorrect. The answer is "+"ABCDEFGH"[q[3]]+".")+'</strong> '+q[4]+'</div>':"";
+var last=S.i==n-1;
+A.innerHTML=nav()+'<div class="card">'+(S.exam?'<div class="row" style="margin:0 0 8px"><strong>Exam block</strong><span>Time left <span id="tm" class="timer">'+fmt(S.end-Date.now())+'</span></span></div>':'')+'<div class="row" style="margin:0 0 8px"><span class="mute">Question '+(S.i+1)+' of '+n+(S.exam?'':' · '+q[0]+(q[7]?' · '+q[7]:'')+(q[6]=="C"?' · Challenge':''))+(q[5]&&!S.exam?' · <span class="flag">New, unchecked</span>':'')+'</span><button class="ghost" onclick="flip('+id+')" aria-pressed="'+!!D.flags[id]+'"><span class="'+(D.flags[id]?"flag":"")+'">'+(D.flags[id]?"Flagged":"Flag")+'</span></button></div><div class="bar"><i style="width:'+(100*S.i/n)+'%"></i></div><p class="stem">'+q[1]+'</p>'+opts+ex+'<div class="row">'+(S.i>0&&!tutor?'<button class="ghost" onclick="S.i--;draw()">Back</button>':'')+'<button class="primary" id="nx" style="margin:0" '+(tutor&&sel===undefined?"disabled":"")+' onclick="next()">'+(last?"Finish":"Next question")+'</button></div><div class="row"><button class="ghost" onclick="go(\'home\')">End session</button><span class="mute">Keys: 1–'+q[2].length+' to answer, Enter for next</span></div></div>'}
+function flip(id){if(D.flags[id])delete D.flags[id];else D.flags[id]=1;save();draw()}
+function pick(k){var id=S.ids[S.i];if(k>=Q[id][2].length)return;if(S.mode=="tutor"){if(S.ans[id]!==undefined)return;S.ans[id]=k;rec(id,k==Q[id][3]);logSession()}else S.ans[id]=k;draw()}
+function next(){if(S.i<S.ids.length-1){S.i++;draw()}else finish()}
+function finish(){stopT();commitTest();logSession();var sc=0;S.ids.forEach(function(id){if(S.ans[id]===Q[id][3])sc++});S.sc=sc;view="result";draw()}
+function result(){
+var n=S.ids.length,p=pct(S.sc,n);
+A.innerHTML=nav()+'<div class="card"><h2>Session complete</h2><div class="big">'+S.sc+' / '+n+'</div><p class="mute">'+p+'% correct · '+(S.exam?"Exam block"+(S.timeout?" · time ran out":""):(S.mode=="tutor"?"Tutor":"Test")+" mode")+'</p><div class="bar"><i style="width:'+p+'%"></i></div><button class="primary" onclick="go(\'home\')">Back to practice</button></div>'+groupTable("System",0)+groupTable("Discipline",7)+'<div class="card"><h2>Review</h2>'+S.ids.map(function(id,j){var q=Q[id],a=S.ans[id],ok=a===q[3];return '<details><summary>'+(j+1)+'. '+(ok?"Correct":"Incorrect")+' · '+q[0]+'</summary><p>'+q[1]+'</p><p><strong>Your answer:</strong> '+(a===undefined?"No answer":q[2][a])+'<br><strong>Correct answer:</strong> '+q[2][q[3]]+'</p><p class="mute">'+q[4]+'</p></details>'}).join("")+'</div>'}
+function groupTable(name,col){var by={};S.ids.forEach(function(id){var t=Q[id][col]||"Other";by[t]=by[t]||{n:0,c:0};by[t].n++;if(S.ans[id]===Q[id][3])by[t].c++});var ks=Object.keys(by).sort(function(a,b){return by[a].c/by[a].n-by[b].c/by[b].n});return '<div class="card"><h2>Score by '+name.toLowerCase()+'</h2><p class="mute" style="margin:0 0 6px">Weakest first.'+(col==0&&S.short&&S.short.length?' Not enough questions yet in: '+S.short.join(", ")+'.':'')+'</p><table class="tp">'+ks.map(function(t){return '<tr><td>'+t+'</td><td>'+by[t].c+' / '+by[t].n+' · '+pct(by[t].c,by[t].n)+'%</td></tr>'}).join("")+'</table></div>'}
+function bpCard(){var tot=0,rows=BP.doms.map(function(d){var n=ids(function(q){return q[0]==d[0]}).length,t=Math.round(BP.target*d[1]/WSUM);tot+=n;return '<div class="trow"><div><span>'+d[0]+' <span class="mute">'+Math.round(100*d[1]/WSUM)+'%</span></span><span class="mute">'+n+' / '+t+'</span></div><div class="bar"><i style="width:'+Math.min(100,100*n/t)+'%"></i></div></div>'}).join("");return '<div class="card"><h2>Question bank vs. exam blueprint</h2><p class="mute" style="margin:0 0 10px">'+tot+' of '+BP.target+' planned questions, weighted like the '+BP.full+'.</p>'+rows+'</div>'}
+function progress(){
+var tot=0,cor=0;Object.keys(D.stats).forEach(function(k){tot+=D.stats[k].a;cor+=D.stats[k].c});
+var rows=T.map(function(t){var s=sysAcc(t),p=pct(s.c,s.a);return '<div class="trow"><div><span>'+t+'</span><span class="mute">'+(s.a?p+'% of '+s.a:"Not started")+'</span></div><div class="bar"><i style="width:'+p+'%"></i></div></div>'}).join("");
+var G=goal(),rd="",streak=0;for(var i=0;i<7;i++){var d=new Date();d.setDate(d.getDate()-i);var e=D.days[dkey(d)]||{a:0,c:0};rd+='<div class="trow"><div><span>'+(i==0?"Today":d.toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"}))+'</span><span class="mute">'+(e.a?e.a+' answered · '+pct(e.c,e.a)+'% correct':"No practice")+'</span></div><div class="bar"><i style="width:'+Math.min(100,100*e.a/G)+'%"></i></div></div>'}
+for(var j=0;j<400;j++){var dd=new Date();dd.setDate(dd.getDate()-j);var ee=D.days[dkey(dd)];if(ee&&ee.a>0)streak++;else if(j>0)break}
+var ses=D.sessions.slice(-8).reverse().map(function(s){return '<div class="row" style="margin:6px 0"><span>'+new Date(s.d).toLocaleDateString()+' · '+(s.x?"Exam block":s.m=="tutor"?"Tutor":"Test")+(s.p&&s.p>s.n?" · partial":"")+'</span><strong>'+s.s+'/'+s.n+' ('+pct(s.s,s.n)+'%)</strong></div>'}).join("")||'<p class="mute">No sessions yet. Finish one to see it here.</p>';
+A.innerHTML=nav()+'<div class="card"><h2>Overall</h2><div class="big">'+pct(cor,tot)+'%</div><p class="mute">'+cor+' correct of '+tot+' answered · '+D.sessions.length+' sessions</p></div><div class="card"><h2>Daily practice</h2><p class="mute">Goal: '+G+' questions a day · streak: '+streak+' day'+(streak==1?"":"s")+'</p>'+rd+'</div><div class="card"><h2>By system</h2>'+rows+'</div>'+bpCard()+'<div class="card"><h2>Recent sessions</h2>'+ses+'</div>'+backupCard()+'<button class="ghost" onclick="reset()">'+(armed?"Tap again to erase all progress":"Reset progress")+'</button><p class="mute" style="text-align:center;margin-top:18px">Step1 Fast Track version '+APPV+' · '+Q.length+' questions<br>Independent study tool. Not affiliated with USMLE, NBME or FSMB.</p>'}
+function reset(){if(!armed){armed=true;draw();return}D={stats:{},flags:{},sessions:[],days:{},plan:D.plan};save();armed=false;draw()}
+document.addEventListener("keydown",function(e){if(view!="quiz"||(e.target&&e.target.tagName=="INPUT"))return;if(e.key>="1"&&e.key<="8"){pick(+e.key-1)}else if(e.key=="Enter"){var b=document.getElementById("nx");if(b&&!b.disabled)next()}});
+draw();
+function checkUpdate(){if(!window.fetch)return;fetch("version.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()}).then(function(j){if(j&&j.v>APPV&&view!="quiz"&&location.search.indexOf("v="+j.v)<0){location.replace(location.pathname+"?v="+j.v)}}).catch(function(){})}
+checkUpdate();
+document.addEventListener("visibilitychange",function(){if(!document.hidden)checkUpdate()});
+</script>
+</body>
+</html>
