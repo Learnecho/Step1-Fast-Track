@@ -118,3 +118,7 @@ Q=[
 (SS,BH,"A resident realizes she gave a patient a double dose of a medication. The patient had no harm. What should she do?","Tell the patient what happened and apologize",["Not tell the patient because there was no harm","Tell only the attending physician","Change the medical record to show the correct dose","Wait to see if a complication develops"],"Physicians should disclose errors to patients honestly, whether or not harm occurred, and report them through the hospital's safety system. Changing records is never acceptable.","F"),
 (SS,BH,"A man is newly diagnosed with HIV. He refuses to tell his wife because he is afraid she will leave him. What is the best next step?","Encourage him to tell her and explain that the health department may notify her if he does not",["Respect his wish and tell no one","Call his wife right away without telling him","Tell his employer","Stop treating him until he tells her"],"Confidentiality can be broken to protect an identifiable third party at serious risk. First counsel and support the patient to disclose. If he still refuses, report to public health, which can notify the partner without naming him.","F"),
 ]
+
+# Exam-style vignettes (index-matched) replace the short stems. Options, answers and explanations are unchanged.
+from s1_batch1_long import LONG
+Q = [(r[0], r[1], LONG[i], r[3], r[4], r[5], r[6]) for i, r in enumerate(Q)]

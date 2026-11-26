@@ -34,7 +34,7 @@ select,input[type=date],input[type=text]{width:100%;padding:10px;border-radius:8
 .mute{color:var(--mute);font-size:14px}
 .bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden}
 .bar i{display:block;height:100%;background:var(--accent)}
-.stem{font:18px/1.6 Georgia,"Times New Roman",serif;margin:12px 0 16px;max-width:62ch}
+.stem{white-space:pre-line;font:18px/1.6 Georgia,"Times New Roman",serif;margin:12px 0 16px;max-width:62ch}
 .opt{display:flex;gap:12px;width:100%;text-align:left;padding:12px;margin-bottom:8px;border:1px solid var(--line);background:var(--card);border-radius:8px}
 .opt b{min-width:22px}
 .opt.sel{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
@@ -72,9 +72,9 @@ textarea{width:100%;margin-top:10px;padding:10px;border:1px solid var(--line);bo
 </main>
 <script>var Q=[];</script>
 <!-- Question files are append-only and must stay in this order: progress is stored by question index. Add new files at the end of this list. -->
-<script src="q/s1-batch1.js?v=1"></script>
+<script src="q/s1-batch1.js?v=2"></script>
 <script>
-var APPV=1;
+var APPV=2;
 // Row: [system, stem, options, answerIndex, explanation, 1 = new/unchecked, "F"|"C", discipline]
 // USMLE Step 1 content specifications (usmle.org): system, midpoint of the published % range.
 var BP={full:"USMLE Step 1 content specifications",target:3000,perBlock:20,blockSec:1800,doms:[
@@ -173,7 +173,7 @@ function next(){if(S.i<S.ids.length-1){S.i++;draw()}else finish()}
 function finish(){stopT();commitTest();logSession();var sc=0;S.ids.forEach(function(id){if(S.ans[id]===Q[id][3])sc++});S.sc=sc;view="result";draw()}
 function result(){
 var n=S.ids.length,p=pct(S.sc,n);
-A.innerHTML=nav()+'<div class="card"><h2>Session complete</h2><div class="big">'+S.sc+' / '+n+'</div><p class="mute">'+p+'% correct · '+(S.exam?"Exam block"+(S.timeout?" · time ran out":""):(S.mode=="tutor"?"Tutor":"Test")+" mode")+'</p><div class="bar"><i style="width:'+p+'%"></i></div><button class="primary" onclick="go(\'home\')">Back to practice</button></div>'+groupTable("System",0)+groupTable("Discipline",7)+'<div class="card"><h2>Review</h2>'+S.ids.map(function(id,j){var q=Q[id],a=S.ans[id],ok=a===q[3];return '<details><summary>'+(j+1)+'. '+(ok?"Correct":"Incorrect")+' · '+q[0]+'</summary><p>'+q[1]+'</p><p><strong>Your answer:</strong> '+(a===undefined?"No answer":q[2][a])+'<br><strong>Correct answer:</strong> '+q[2][q[3]]+'</p><p class="mute">'+q[4]+'</p></details>'}).join("")+'</div>'}
+A.innerHTML=nav()+'<div class="card"><h2>Session complete</h2><div class="big">'+S.sc+' / '+n+'</div><p class="mute">'+p+'% correct · '+(S.exam?"Exam block"+(S.timeout?" · time ran out":""):(S.mode=="tutor"?"Tutor":"Test")+" mode")+'</p><div class="bar"><i style="width:'+p+'%"></i></div><button class="primary" onclick="go(\'home\')">Back to practice</button></div>'+groupTable("System",0)+groupTable("Discipline",7)+'<div class="card"><h2>Review</h2>'+S.ids.map(function(id,j){var q=Q[id],a=S.ans[id],ok=a===q[3];return '<details><summary>'+(j+1)+'. '+(ok?"Correct":"Incorrect")+' · '+q[0]+'</summary><p style="white-space:pre-line">'+q[1]+'</p><p><strong>Your answer:</strong> '+(a===undefined?"No answer":q[2][a])+'<br><strong>Correct answer:</strong> '+q[2][q[3]]+'</p><p class="mute">'+q[4]+'</p></details>'}).join("")+'</div>'}
 function groupTable(name,col){var by={};S.ids.forEach(function(id){var t=Q[id][col]||"Other";by[t]=by[t]||{n:0,c:0};by[t].n++;if(S.ans[id]===Q[id][3])by[t].c++});var ks=Object.keys(by).sort(function(a,b){return by[a].c/by[a].n-by[b].c/by[b].n});return '<div class="card"><h2>Score by '+name.toLowerCase()+'</h2><p class="mute" style="margin:0 0 6px">Weakest first.'+(col==0&&S.short&&S.short.length?' Not enough questions yet in: '+S.short.join(", ")+'.':'')+'</p><table class="tp">'+ks.map(function(t){return '<tr><td>'+t+'</td><td>'+by[t].c+' / '+by[t].n+' · '+pct(by[t].c,by[t].n)+'%</td></tr>'}).join("")+'</table></div>'}
 function bpCard(){var tot=0,rows=BP.doms.map(function(d){var n=ids(function(q){return q[0]==d[0]}).length,t=Math.round(BP.target*d[1]/WSUM);tot+=n;return '<div class="trow"><div><span>'+d[0]+' <span class="mute">'+Math.round(100*d[1]/WSUM)+'%</span></span><span class="mute">'+n+' / '+t+'</span></div><div class="bar"><i style="width:'+Math.min(100,100*n/t)+'%"></i></div></div>'}).join("");return '<div class="card"><h2>Question bank vs. exam blueprint</h2><p class="mute" style="margin:0 0 10px">'+tot+' of '+BP.target+' planned questions, weighted like the '+BP.full+'.</p>'+rows+'</div>'}
 function progress(){

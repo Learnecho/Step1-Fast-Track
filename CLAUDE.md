@@ -15,7 +15,8 @@ Separate product from Learn Echo (Learnecho/SPI-Practice); its engine was copied
 - Systems and weights follow the USMLE Step 1 content specifications (usmle.org), midpoint of each range: Human development 2, Blood & immune 11, Nervous system & behavior 12, Musculoskeletal & skin 10, Cardiovascular 9, Respiratory & renal 13, Gastrointestinal 8, Reproductive & endocrine 14, Multisystem 10, Biostatistics & epidemiology 5, Communication & ethics 7.5. Keep system names exactly as in BP in index.html. Fill the biggest gaps first (Progress tab shows coverage).
 - Disciplines: Pathology, Physiology, Pharmacology, Microbiology, Immunology, Biochemistry, Genetics, Anatomy, Embryology, Behavioral science, Histology & cell biology, Nutrition.
 - Original questions only. Never copy from UWorld, Amboss, NBME, First Aid or any other paid source.
-- Batches done: s1_batch1 (100, all systems).
+- Stems must be exam-style clinical vignettes (about 90 to 150 words): age and sex, presenting problem, history, medications, social and family history, vital signs, exam, labs (one per line), with some irrelevant details. Do not name the diagnosis; make the student work it out, then answer a second-step question (mechanism, next step, drug, complication). End with "Which of the following...?".
+- Batches done: s1_batch1 (100, all systems; vignette stems in tools/qsrc/s1_batch1_long.py).
 
 ## Features
 - Today's goal from the study plan (exam date + hours/day), mixing due reviews (~60%) with new questions.
