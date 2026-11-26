@@ -6,7 +6,7 @@ Separate product from Learn Echo (Learnecho/SPI-Practice); its engine was copied
 ## Every change: bump the version
 1. Increase `v` in `version.json` by 1.
 2. Set `var APPV=` in index.html to the same number.
-3. Set `?v=` on the script tags in index.html (question files and labs.js) to the same number.
+3. Set `?v=` on the script tags in index.html (question files, labs.js, videos.js) to the same number.
 
 ## Question bank (goal: 3,000)
 - Row: [system, stem, options (5), answerIndex, explanation, 1 = "New, unchecked" until the owner (a physician) reviews it, "F"/"C" level, discipline].
@@ -24,4 +24,5 @@ Separate product from Learn Echo (Learnecho/SPI-Practice); its engine was copied
 - Timed exam blocks like the real exam: 20 questions per 30 minutes, weighted by system.
 - Study plan: days left, daily goal, focus systems (weight x weakness), phases (Build, Sharpen, Final week).
 - Lab values: labs.js (LABS: category, test, range, teaching note, high-yield flag). Labs tab (tutorial with search, categories, ★ high-yield filter) and a "Lab values" button on every question that opens the same table over the question, like the real exam. Original notes only.
+- Learn tab: Videos and Lab values. Video library: videos.js (VIDS: id, title, system, file, poster, mins, desc, key points); files in videos/ (mp4 + jpg poster). Videos are original narrated animations made with tools/videos: render.py draws frames with Pillow and encodes with ffmpeg; narrate.py writes the narration (Kokoro TTS, voice af_heart, model files from the kokoro-onnx GitHub releases, not stored in this repo), stretches each segment to fit its narration via durations.json, and muxes the voice track. Keep each video under ~25 MB.
 - Planned: explanations in Pashto, Dari and Urdu (language toggle); images.

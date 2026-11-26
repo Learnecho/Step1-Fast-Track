@@ -63,6 +63,7 @@ textarea{width:100%;margin-top:10px;padding:10px;border:1px solid var(--line);bo
 .lab{border-top:1px solid var(--line);padding:9px 0}.lab summary{display:flex;justify-content:space-between;gap:10px;list-style:none}.lab summary::-webkit-details-marker{display:none}.lab summary span:last-child{text-align:right;font-variant-numeric:tabular-nums;white-space:normal;max-width:55%}.lab p{margin:6px 0 2px;font-size:14px;color:var(--mute)}.star{color:var(--flag)}
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 10px}.chips button{padding:6px 10px;border:1px solid var(--line);background:var(--card);border-radius:16px;font-size:14px}.chips button.on{background:var(--accent);border-color:var(--accent);color:#fff}
 #labov{position:fixed;inset:0;background:var(--bg);overflow:auto;z-index:10;padding:calc(env(safe-area-inset-top,0px) + 12px) 16px 24px}#labov .in{max-width:680px;margin:0 auto}
+.vcard{display:flex;gap:12px;width:100%;text-align:left;padding:10px;border:1px solid var(--line);background:var(--card);border-radius:10px;margin-bottom:10px;align-items:center}.vcard img{width:128px;aspect-ratio:16/9;object-fit:cover;border-radius:6px;flex:none;background:#000}.vcard b{display:block}.vplay{width:100%;border-radius:10px;background:#000;display:block;aspect-ratio:16/9}
 </style>
 </head>
 <body>
@@ -75,10 +76,11 @@ textarea{width:100%;margin-top:10px;padding:10px;border:1px solid var(--line);bo
 </main>
 <script>var Q=[];</script>
 <!-- Question files are append-only and must stay in this order: progress is stored by question index. Add new files at the end of this list. -->
-<script src="q/s1-batch1.js?v=3"></script>
-<script src="labs.js?v=3"></script>
+<script src="q/s1-batch1.js?v=4"></script>
+<script src="labs.js?v=4"></script>
+<script src="videos.js?v=4"></script>
 <script>
-var APPV=3;
+var APPV=4;
 // Row: [system, stem, options, answerIndex, explanation, 1 = new/unchecked, "F"|"C", discipline]
 // USMLE Step 1 content specifications (usmle.org): system, midpoint of the published % range.
 var BP={full:"USMLE Step 1 content specifications",target:3000,perBlock:20,blockSec:1800,doms:[
@@ -113,7 +115,7 @@ function logSession(){var n=0,sc=0;S.ids.forEach(function(id){if(S.ans[id]!==und
 function commitTest(){if(S.mode=="test"&&!S.committed){S.committed=1;S.ids.forEach(function(id){if(S.ans[id]!==undefined)rec(id,S.ans[id]===Q[id][3])})}}
 function pct(c,a){return a?Math.round(100*c/a):0}
 function ids(f){var r=[];Q.forEach(function(q,i){if(f(q,i))r.push(i)});return r}
-function nav(){var p=view=="progress",pl=view=="plan",lb=view=="labs";return '<nav><button class="'+(p||pl||lb?"":"on")+'" onclick="go(\'home\')">Practice</button><button class="'+(pl?"on":"")+'" onclick="go(\'plan\')">Plan</button><button class="'+(lb?"on":"")+'" onclick="go(\'labs\')">Labs</button><button class="'+(p?"on":"")+'" onclick="go(\'progress\')">Progress</button></nav>'}
+function nav(){var p=view=="progress",pl=view=="plan",lb=view=="labs"||view=="videos"||view=="video";return '<nav><button class="'+(p||pl||lb?"":"on")+'" onclick="go(\'home\')">Practice</button><button class="'+(pl?"on":"")+'" onclick="go(\'plan\')">Plan</button><button class="'+(lb?"on":"")+'" onclick="go(learnTab)">Learn</button><button class="'+(p?"on":"")+'" onclick="go(\'progress\')">Progress</button></nav>'}
 // ---- Lab values ----
 var LCATS=[];LABS.forEach(function(r){if(LCATS.indexOf(r[0])<0)LCATS.push(r[0])});
 var lq="",lcat="All",lkey=false;
@@ -122,11 +124,19 @@ function labList(){var r=labRows(),last="";if(!r.length)return '<p class="mute">
 function labCtl(){return '<input type="text" id="lq" placeholder="Search, e.g. sodium, PTT, CSF" value="'+esc(lq)+'" oninput="lq=this.value;labUpd()" autocomplete="off"><div class="chips">'+["All"].concat(LCATS).map(function(c){return '<button class="'+(lcat==c?"on":"")+'" onclick="lcat=\''+c+'\';labDraw()">'+c+'</button>'}).join("")+'<button class="'+(lkey?"on":"")+'" onclick="lkey=!lkey;labDraw()">★ High-yield</button></div><div id="llist">'+labList()+'</div>'}
 function labUpd(){var e=document.getElementById("llist");if(e)e.innerHTML=labList()}
 function labDraw(){if(document.getElementById("labov"))labOpen();else draw()}
-function labs(){A.innerHTML=nav()+'<div class="card"><h2>Normal lab values</h2><p class="mute" style="margin:0">Adult reference ranges with what makes each value high or low. Tap a test to learn it. On the real exam a lab values table is always available, so you do not need every number: memorize the ★ high-yield ones and learn the patterns. Ranges vary slightly between labs; use the values given in each question.</p></div><div class="card">'+labCtl()+'</div>'}
+var learnTab="videos",vid=null;
+function learnSeg(){return '<div class="seg" style="margin-top:0"><button class="'+(view=="labs"?"":"on")+'" onclick="learnTab=\'videos\';go(\'videos\')">Videos</button><button class="'+(view=="labs"?"on":"")+'" onclick="learnTab=\'labs\';go(\'labs\')">Lab values</button></div>'}
+function videos(){D.watched=D.watched||{};var by={};VIDS.forEach(function(v){(by[v.system]=by[v.system]||[]).push(v)});
+A.innerHTML=nav()+learnSeg()+'<div class="card"><h2>Video library</h2><p class="mute" style="margin:0">Short narrated animations of high-yield concepts. Watch, then practice related questions. '+VIDS.length+' video'+(VIDS.length==1?"":"s")+' so far; more are added over time.</p></div>'+
+BP.doms.filter(function(d){return by[d[0]]}).map(function(d){return '<h2 style="margin:16px 0 8px;font-size:15px;color:var(--accent)">'+d[0]+'</h2>'+by[d[0]].map(function(v){return '<button class="vcard" onclick="vid=\''+v.id+'\';go(\'video\')"><img src="'+v.poster+'" alt="" loading="lazy"><span><b>'+v.title+'</b><span class="mute">'+v.mins+(D.watched[v.id]?' · ✓ Watched':'')+'</span></span></button>'}).join("")}).join("")}
+function video(){var v=VIDS.filter(function(x){return x.id==vid})[0];if(!v){go("videos");return}
+var rel=ids(function(q){return q[0]==v.system});
+A.innerHTML=nav()+'<button class="ghost" style="margin-bottom:10px" onclick="go(\'videos\')">‹ All videos</button><div class="card"><video class="vplay" src="'+v.file+'" poster="'+v.poster+'" controls playsinline preload="metadata" onended="D.watched=D.watched||{};D.watched[\''+v.id+'\']=1;save()"></video><h2 style="margin-top:12px">'+v.title+'</h2><p class="mute">'+v.system+' · '+v.mins+'</p><p>'+v.desc+'</p><h2 style="font-size:15px">Key points</h2><ul style="margin:0;padding-left:20px">'+v.pts.map(function(p){return '<li style="margin-bottom:6px">'+p+'</li>'}).join("")+'</ul><button class="primary" style="margin-top:14px" '+(rel.length?"":"disabled")+' onclick="start(ids(function(q){return q[0]==\''+v.system+'\'}),{mode:\'tutor\'})">Practice '+v.system+' questions ('+rel.length+')</button></div>'}
+function labs(){A.innerHTML=nav()+learnSeg()+'<div class="card"><h2>Normal lab values</h2><p class="mute" style="margin:0">Adult reference ranges with what makes each value high or low. Tap a test to learn it. On the real exam a lab values table is always available, so you do not need every number: memorize the ★ high-yield ones and learn the patterns. Ranges vary slightly between labs; use the values given in each question.</p></div><div class="card">'+labCtl()+'</div>'}
 function labOpen(){var o=document.getElementById("labov");if(!o){o=document.createElement("div");o.id="labov";document.body.appendChild(o)}o.innerHTML='<div class="in"><div class="row" style="margin:0 0 10px"><h2 style="margin:0">Lab values</h2><button class="ghost" onclick="labClose()">Close</button></div>'+labCtl()+'</div>'}
 function labClose(){var o=document.getElementById("labov");if(o)o.remove()}
 function go(v){labClose();if(view=="quiz"&&S){stopT();commitTest();logSession()}view=v;armed=false;draw()}
-function draw(){window.scrollTo(0,0);({home:home,quiz:quiz,result:result,progress:progress,plan:plan,labs:labs})[view]();if(view=="home")srchUpd()}
+function draw(){window.scrollTo(0,0);({home:home,quiz:quiz,result:result,progress:progress,plan:plan,labs:labs,videos:videos,video:video})[view]();if(view=="home")srchUpd()}
 function start(list,o){if(!list.length)return;o=o||{};stopT();S={ids:o.keep?list:shuffle(list),i:0,mode:o.mode||mode,ans:{},sid:Date.now(),exam:!!o.secs};if(o.secs){S.end=Date.now()+o.secs*1000;tick=setInterval(tickT,1000)}view="quiz";draw()}
 
 // ---- Study plan ----
